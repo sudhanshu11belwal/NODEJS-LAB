@@ -12,7 +12,7 @@ const server = http.createServer((req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(`
             <h1>Welcome to My Node.js Server</h1>
-            <p><strong>Name:</strong> Your Name</p>
+            <p><strong>Name:</strong> sudhanshu belwal</p>
             <p><strong>Scholar Number:</strong> 23145024</p>
             <p><strong>Course:</strong> BCA VII</p>
         `);
