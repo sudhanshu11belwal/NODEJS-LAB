@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Analytics Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <!-- Main Container -->
+    <div class="app-container">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+
+                <div>
+                    <h2>StudentHub</h2>
+                    <span>Analytics Dashboard</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#students" class="nav-item">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Students</span>
+                </a>
+
+                <a href="#analytics" class="nav-item">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <div class="api-status">
+                    <span class="status-dot" id="statusDot"></span>
+
+                    <div>
+                        <strong id="statusText">Checking API...</strong>
+                        <small>Node.js API</small>
+                    </div>
+                </div>
+
+                <div class="api-url">
+                    <i class="fa-solid fa-link"></i>
+                    localhost:3000
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Header -->
+            <header class="topbar">
+
+                <div>
+                    <p class="welcome">WELCOME BACK 👋</p>
+
+                    <h1>
+                        Student
+                        <span>Analytics</span>
+                    </h1>
+
+                    <p class="subtitle">
+                        Search, filter and analyze student performance.
+                    </p>
+                </div>
+
+                <button class="refresh-btn" onclick="loadStudents()">
+                    <i class="fa-solid fa-rotate"></i>
+                    Refresh Data
+                </button>
+
+            </header>
+
+
+            <!-- Statistics -->
+            <section class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <span>Total Students</span>
+                        <h2 id="totalStudents">--</h2>
+                        <small>Currently displayed</small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon purple">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <span>BCA Students</span>
+                        <h2 id="bcaStudents">--</h2>
+                        <small>Course enrollment</small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <span>Average Marks</span>
+                        <h2 id="averageMarks">--</h2>
+                        <small>Current results</small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon orange">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <span>Highest Marks</span>
+                        <h2 id="highestMarks">--</h2>
+                        <small>Top performer</small>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Filter Section -->
+            <section class="filter-panel">
+
+                <div class="filter-heading">
+
+                    <div>
+                        <h2>
+                            <i class="fa-solid fa-sliders"></i>
+                            Search & Filter
+                        </h2>
+
+                        <p>
+                            Use multiple filters together to find students.
+                        </p>
+                    </div>
+
+                    <button class="reset-btn" onclick="resetFilters()">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        Reset
+                    </button>
+
+                </div>
+
+
+                <div class="filters">
+
+                    <!-- Search -->
+                    <div class="input-group search-group">
+
+                        <label>
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            Search Student
+                        </label>
+
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+
+                            <input
+                                type="text"
+                                id="searchInput"
+                                placeholder="Search by name..."
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <!-- Course -->
+                    <div class="input-group">
+
+                        <label>
+                            <i class="fa-solid fa-book"></i>
+                            Course
+                        </label>
+
+                        <select id="courseSelect">
+
+                            <option value="">All Courses</option>
+
+                            <option value="BCA">
+                                BCA
+                            </option>
+
+                            <option value="BBA">
+                                BBA
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Marks -->
+                    <div class="input-group">
+
+                        <label>
+                            <i class="fa-solid fa-star"></i>
+                            Minimum Marks
+                        </label>
+
+                        <input
+                            type="number"
+                            id="marksInput"
+                            placeholder="e.g. 60"
+                            min="0"
+                            max="100"
+                        >
+
+                    </div>
+
+
+                    <!-- Sort -->
+                    <div class="input-group">
+
+                        <label>
+                            <i class="fa-solid fa-arrow-down-wide-short"></i>
+                            Sort By
+                        </label>
+
+                        <select id="sortSelect">
+
+                            <option value="">
+                                Default
+                            </option>
+
+                            <option value="name">
+                                Name
+                            </option>
+
+                            <option value="marks">
+                                Marks
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Order -->
+                    <div class="input-group">
+
+                        <label>
+                            <i class="fa-solid fa-sort"></i>
+                            Order
+                        </label>
+
+                        <select id="orderSelect">
+
+                            <option value="asc">
+                                Ascending ↑
+                            </option>
+
+                            <option value="desc">
+                                Descending ↓
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Apply -->
+                    <button class="apply-btn" onclick="applyFilters()">
+
+                        <i class="fa-solid fa-filter"></i>
+
+                        Apply Filters
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- Students Table -->
+            <section class="students-section" id="students">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>
+                            Student Records
+                        </h2>
+
+                        <p id="resultText">
+                            Showing students
+                        </p>
+                    </div>
+
+                    <div class="record-count">
+                        <i class="fa-solid fa-database"></i>
+                        <span id="recordCount">0</span> Records
+                    </div>
+
+                </div>
+
+
+                <!-- Loading -->
+                <div class="loading" id="loading">
+
+                    <div class="spinner"></div>
+
+                    <p>
+                        Loading student data...
+                    </p>
+
+                </div>
+
+
+                <!-- Error -->
+                <div class="error-box" id="errorBox">
+
+                    <i class="fa-solid fa-circle-exclamation"></i>
+
+                    <div>
+                        <strong>Something went wrong</strong>
+                        <p id="errorMessage">
+                            Unable to connect to server.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Table -->
+                <div class="table-container" id="tableContainer">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    #
+                                </th>
+
+                                <th>
+                                    Student
+                                </th>
+
+                                <th>
+                                    Course
+                                </th>
+
+                                <th>
+                                    Marks
+                                </th>
+
+                                <th>
+                                    Performance
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="studentTableBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState">
+
+                    <div class="empty-icon">
+                        <i class="fa-solid fa-user-slash"></i>
+                    </div>
+
+                    <h3>
+                        No Students Found
+                    </h3>
+
+                    <p>
+                        Try changing your search or filter options.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- Footer -->
+            <footer>
+
+                <p>
+                    StudentHub Dashboard
+                    <span>•</span>
+                    Powered by Node.js REST API
+                </p>
+
+                <p>
+                    BCA Lab Assignment 04
+                </p>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
