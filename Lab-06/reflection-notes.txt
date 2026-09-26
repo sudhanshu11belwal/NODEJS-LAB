@@ -1,0 +1,10 @@
+Task 9 – Reflection Notes
+
+1. Difference between fs.readFile() and fs.readFileSync()
+
+fs.readFile() is an asynchronous method, so it starts the file-reading operation and allows the rest of the program to continue running. That is why the second console.log() can execute before the file content is printed. The file content is printed later when the callback function is executed after the reading operation is completed. In comparison, fs.readFileSync() waits until the complete file has been read before moving to the next statement. Therefore, synchronous file reading blocks the execution of the program until the operation finishes.
+
+
+2. Possible problem when two people use add-note.js at the same time
+
+If two people run add-note.js at exactly the same moment, both programs may try to write to notes.txt at nearly the same time. File operations could compete for access to the same file, especially when many processes are writing simultaneously. Depending on the situation and operating system, the writes could be delayed or potentially cause unexpected ordering of notes. This can become a problem in applications where many users need to write data at the same time. A proper database or a controlled file-writing mechanism would be more suitable for a multi-user application.
